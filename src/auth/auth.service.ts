@@ -26,13 +26,13 @@ export class AuthService {
       email,
       password: hashedPassword,
     });
-
-    const createdUser = await newUser.save();
-    return this.signinToken(
-      createdUser._id,
-      createdUser.email,
-      createdUser.name,
-    );
+    await newUser.save()
+    const token = await this.signinToken(user._id, user.email, user.name)
+    return {
+      name: newUser.name,
+      email: newUser.email,
+      token
+    };
   }
 
   async login({ email, password }: CreateAuthDto) {
@@ -46,8 +46,12 @@ export class AuthService {
       }
       delete user.password;
     }
-
-    return this.signinToken(user._id, user.email, user.name);
+    const token = await this.signinToken(user._id, user.email, user.name)
+    return {
+      name: user.name,
+      email: user.email,
+      token
+    };
   }
 
   async signinToken(id: number, email: string, name: string) {
@@ -63,8 +67,7 @@ export class AuthService {
       secret: jwtSecret,
       expiresIn: '1d',
     });
-    return {
-      access_token: token,
-    };
+
+    return token;
   }
 }

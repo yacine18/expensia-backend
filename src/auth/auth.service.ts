@@ -27,7 +27,7 @@ export class AuthService {
       password: hashedPassword,
     });
     await newUser.save()
-    const token = await this.signinToken(user._id, user.email, user.name)
+    const token = await this.signinToken(newUser._id, newUser.email, newUser.name)
     return {
       name: newUser.name,
       email: newUser.email,
@@ -54,9 +54,9 @@ export class AuthService {
     };
   }
 
-  async signinToken(id: number, email: string, name: string) {
+  async signinToken(_id: string, email: string, name: string) {
     const payload = {
-      id,
+      _id,
       email,
       name,
     };

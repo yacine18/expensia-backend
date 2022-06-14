@@ -29,6 +29,7 @@ export class AuthService {
     await newUser.save()
     const token = await this.signinToken(newUser._id, newUser.email, newUser.name)
     return {
+      message: "Account created successfully",
       name: newUser.name,
       email: newUser.email,
       token

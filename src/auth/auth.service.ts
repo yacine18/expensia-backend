@@ -51,7 +51,7 @@ export class AuthService {
       id,
       email,
     };
-    const jwtSecret = process.env.JWT_SECRET;
+    const jwtSecret = process.env.JWT_SECRET || "12KHUH@mlkmldsjfkl!://!x:cùezùlljznkj>W?XS?.N.?QX";
     const token = await this.jwt.signAsync(payload, {
       secret: jwtSecret,
       expiresIn: "1d"

@@ -28,7 +28,11 @@ export class AuthService {
     });
 
     const createdUser = await newUser.save();
-    return this.signinToken(createdUser._id, createdUser.email)
+    return this.signinToken(
+      createdUser._id,
+      createdUser.email,
+      createdUser.name,
+    );
   }
 
   async login({ email, password }: CreateAuthDto) {
@@ -43,21 +47,24 @@ export class AuthService {
       delete user.password;
     }
 
-    return this.signinToken(user._id, user.email);
+    return this.signinToken(user._id, user.email, user.name);
   }
 
-  async signinToken(id: number, email: string) {
+  async signinToken(id: number, email: string, name: string) {
     const payload = {
       id,
       email,
+      name,
     };
-    const jwtSecret = process.env.JWT_SECRET || "12KHUH@mlkmldsjfkl!://!x:cùezùlljznkj>W?XS?.N.?QX";
+    const jwtSecret =
+      process.env.JWT_SECRET ||
+      '12KHUH@mlkmldsjfkl!://!x:cùezùlljznkj>W?XS?.N.?QX';
     const token = await this.jwt.signAsync(payload, {
       secret: jwtSecret,
-      expiresIn: "1d"
-    })
+      expiresIn: '1d',
+    });
     return {
-      access_token: token
+      access_token: token,
     };
   }
 }
